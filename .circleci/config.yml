@@ -16,7 +16,7 @@ jobs:
               # when this file is changed , this key will fail
               -v1-dependencies-{{ checksum "package.json"}} 
               # find the most recent generated cach used from any branch
-              
+              -v1-dependencies-
 
         - run:
             name: install Dependencies
@@ -40,7 +40,7 @@ jobs:
             name: deploy at netlify
             command: npm run deploy
 
-workflow:
+workflows:
   build_deploy:
     jobs:
       -deploy
