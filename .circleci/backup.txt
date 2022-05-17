@@ -1,0 +1,48 @@
+config.yml file
+
+version: 2.1
+
+
+
+jobs:
+   deploy:
+      docker:
+        - image: cimg/node:16.10
+      steps:
+        - chekout
+
+        #Download and cash dependencies
+        - restore-cashe:
+            keys:
+              # find a czsh crrosponding  to this spesific package.json checksum
+              # when this file is changed , this key will fail
+              -v1-dependencies-{{ checksum "package.json"}} 
+              # find the most recent generated cach used from any branch
+              -v1-dependencies-
+
+        - run:
+            name: install Dependencies
+            command: npm install
+
+
+        - save_cashe: 
+            paths:
+              - node_modules 
+            key: -v1-dependencies-{{ checksum "package.json"}} 
+
+        - run:
+            name: run test
+            command: npm run test
+                
+        - run:
+            name: run build
+            command: npm run build    
+
+        - run:
+            name: deploy at netlify
+            command: npm run deploy
+
+workflows:
+  build_deploy:
+    jobs:
+      -deploy

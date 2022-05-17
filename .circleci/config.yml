@@ -1,37 +1,27 @@
 version: 2.1
 
-
-
+workflows:
+    version: 2 
+ jobs:
+      - build:
+          filters:
+            branches:
+              only: 
+                - main
 jobs:
-   deploy:
+   build:
       docker:
-        - image: cimg/node:16.10
+        - image: cimg/node:12.10
+
+      executor: node/default
+
       steps:
+        - node/install
         - chekout
-
-        #Download and cash dependencies
-        - restore-cash:
-            keys:
-              # find a czsh crrosponding  to this spesific package.json checksum
-              # when this file is changed , this key will fail
-              -v1-dependencies-{{ checksum "package.json"}} 
-              # find the most recent generated cach used from any branch
-              -v1-dependencies-
-
         - run:
             name: install Dependencies
             command: npm install
-
-
-        - save_cashe: 
-            paths:
-              - node_modules 
-            key: -v1-dependencies-{{ checksum "package.json"}} 
-
-        - run:
-            name: run test
-            command: npm run test
-                
+   
         - run:
             name: run build
             command: npm run build    
@@ -40,7 +30,5 @@ jobs:
             name: deploy at netlify
             command: npm run deploy
 
-workflows:
-  build_deploy:
-    jobs:
-      -deploy
+
+ 
