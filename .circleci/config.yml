@@ -17,27 +17,27 @@ workflows:
             branches:
               only: 
                 - main
-    jobs:
-      build:
-        docker:
-          - image: cimg/node:16.10
-        steps:
-          - chekout
+jobs:
+  build:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - chekout
 
-          - run:
-            name: install Dependencies
-            command: npm install
+      - run:
+        name: install Dependencies
+        command: npm install
 
-          - run:
-            name: run test
-            command: npm run test
+      - run:
+        name: run test
+        command: npm run test
                 
-          - run:
-            name: run build
-            command: npm run build    
+      - run:
+        name: run build
+        command: npm run build    
 
-          - run:
-            name: deploy at netlify
-            command: npm run deploy
+      - run:
+        name: deploy at netlify
+        command: npm run deploy
 
 
