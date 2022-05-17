@@ -15,7 +15,7 @@ workflows:
 jobs:
   build:
     docker:
-      - image: "cimg/node:16.10
+      - image: cimg/node:16.10
     executor: node/default
     steps:
       - node/install
