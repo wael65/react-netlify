@@ -43,5 +43,8 @@ jobs:
 workflows:
     build_deploy:
       jobs:
-        -deploy    
+        SCHEMA:
+          type: array
+          INPUT:
+            -deploy   
         
