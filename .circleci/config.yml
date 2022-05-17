@@ -1,4 +1,4 @@
-# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
+     # This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
 version: 2.1
 
 # Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
@@ -9,37 +9,32 @@ orbs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  version: 2
-  main:
+  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - build:
-          filters:
-            branches:
-              only: 
-                - main
-jobs:
-  build:
-    docker:
-      - image: cimg/node:16.10
-    executor: node/default
-    steps:
-      - node/install
-      - checkout
+      - node/test:
+          # This is the node version to use for the `cimg/node` tag
+          # Relevant tags can be found on the CircleCI Developer Hub
+          # https://circleci.com/developer/images/image/cimg/node
+          version: '16.10'
+          # If you are using yarn, change the line below from "npm" to "yarn"
+          pkg-manager: npm
 
-      - run:
-          name: install Dependencies
-          command: npm install
+      -  build:
+          docker:
+            - image: cimg/node:16.10
 
-      - run:
-          name: run test
-          command: npm run test
-                
-      - run:
-          name: run build
-          command: npm run build    
+         steps:
+            - node/install
+            - chekout
+            - run:
+                name: install Dependencies
+                command: npm install
+   
+            - run:
+                name: run build
+                command: npm run build    
 
-      - run:
-          name: deploy at netlify
-          command: npm run deploy
-
-
+            - run:
+               name: deploy at netlify
+               command: npm run deploy
