@@ -17,7 +17,7 @@ jobs:
         - chekout
 
         #Download and cash dependencies
-        - restore-cashe:
+        - restore_cashe:
             keys:
               # find a czsh crrosponding  to this spesific package.json checksum
               # when this file is changed , this key will fail
