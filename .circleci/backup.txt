@@ -90,7 +90,7 @@ jobs:
       circleCi :
      --------
 
-     # This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
+# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
 version: 2.1
 
 # Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
@@ -111,3 +111,36 @@ workflows:
           version: '16.10'
           # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: npm
+
+---------------------------------------------------------
+version: 2.1
+orbs:
+  node: circleci/node@4.7
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: 
+                - main
+
+jobs:
+  build:
+    docker:
+      - image: "cimg/base:stable"
+    executor: node/default
+    steps:
+      - node/install
+      - checkout
+      - run:
+          name: install Dependencies
+          command: npm install           
+      - run:
+          name: run Build
+          command: npm run build
+      - run:
+          name: deploy at netlify 
+          command: npm run deploy
