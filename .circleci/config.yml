@@ -21,23 +21,25 @@ jobs:
   build:
     docker:
       - image: cimg/node:16.10
+    executor: node/default
     steps:
-      - chekout
+      - node/install
+      - checkout
 
       - run:
-        name: install Dependencies
-        command: npm install
+          name: install Dependencies
+          command: npm install
 
       - run:
-        name: run test
-        command: npm run test
+          name: run test
+          command: npm run test
                 
       - run:
-        name: run build
-        command: npm run build    
+          name: run build
+          command: npm run build    
 
       - run:
-        name: deploy at netlify
-        command: npm run deploy
+          name: deploy at netlify
+          command: npm run deploy
 
 
