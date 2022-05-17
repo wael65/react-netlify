@@ -8,43 +8,28 @@ orbs:
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-
-jobs:
+workflows:
+  jobs:
     build_deploy:
       docker:
         - image: cimg/node:16.10
       steps:
         - chekout
 
-        #Download and cash dependencies
-        
+        - run:
+          name: install Dependencies
+          command: npm install
 
         - run:
-            name: install Dependencies
-            command: npm install
-
-
-        
-
-        - run:
-            name: run test
-            command: npm run test
+          name: run test
+          command: npm run test
                 
         - run:
-            name: run build
-            command: npm run build    
+          name: run build
+          command: npm run build    
 
         - run:
-            name: deploy at netlify
-            command: npm run deploy
+          name: deploy at netlify
+          command: npm run deploy
 
 
-
-workflows:
-    build_deploy:
-      jobs:
-        SCHEMA:
-          type: array
-          INPUT:
-            -deploy   
-        
